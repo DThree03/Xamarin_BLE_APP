@@ -67,18 +67,18 @@ namespace BLE_TEST
                     {
                         ConnectDevice = dev;
                         ConnectDevice.ConnectToDevice();
-                        Navigation.PushAsync(new Service(), false);
+                        await Navigation.PushAsync(new Service(), false);
                         
                     }
                 }
             }
         }
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
-             
+
             ScanDevices.Clear();
             blelist.Clear();
-            
+
             ble.StartScanningForDevices();
             base.OnAppearing();
         }

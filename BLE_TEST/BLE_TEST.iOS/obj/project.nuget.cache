@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "CD/Y1hR2HmgkiWyz6/k8HvWqE2qK5RzQVaJAt6QY3yVxwdRlaZI00hlLTiQQKW2HHcjn4plIPuP6hRyL2fZ7EQ==",
+  "dgSpecHash": "mgz9JX7bGN55yVU51g8r5WLQJrKundug4GfVjLV75gQuVIZpeg24UR1ums5KSC3ewGF70wrMJNohhm3SJsANuQ==",
   "success": true,
   "projectFilePath": "E:\\PRODUCTION\\1.Freelance\\5.BLE\\4.Software\\Xamarin.BLE.TEST\\BLE_TEST\\BLE_TEST.iOS\\BLE_TEST.iOS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DThree\\.nuget\\packages\\quick.xamarin.ble\\1.0.4\\quick.xamarin.ble.1.0.4.nupkg.sha512",
-    "C:\\Users\\DThree\\.nuget\\packages\\xamarin.forms\\3.3.0.967583\\xamarin.forms.3.3.0.967583.nupkg.sha512"
+    "C:\\Users\\DThree\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\DThree\\.nuget\\packages\\xamarin.essentials\\1.6.0\\xamarin.essentials.1.6.0.nupkg.sha512",
+    "C:\\Users\\DThree\\.nuget\\packages\\xamarin.forms\\3.3.0.967583\\xamarin.forms.3.3.0.967583.nupkg.sha512",
+    "C:\\Users\\DThree\\.nuget\\packages\\xamarin.plugin.filepicker\\2.1.41\\xamarin.plugin.filepicker.2.1.41.nupkg.sha512"
   ],
   "logs": []
 }

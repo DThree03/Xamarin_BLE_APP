@@ -24,6 +24,7 @@ namespace BLE_TEST.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+
             _manager = (BluetoothManager)Android.App.Application.Context.GetSystemService(Android.Content.Context.BluetoothService);
             _manager.Adapter.Enable();
             base.OnCreate(savedInstanceState);

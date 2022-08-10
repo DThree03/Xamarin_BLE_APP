@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
+using Plugin.FilePicker;
+using Plugin.FilePicker.Abstractions;
+using Xamarin.Essentials;
+
 namespace BLE_TEST
 {
     public partial class Service : ContentPage
@@ -17,28 +21,14 @@ namespace BLE_TEST
         IGattCharacteristic SelectCharacteristic = null;
         ObservableCollection<CharacteristicsList> CharacteristicsList = new ObservableCollection<CharacteristicsList>();
         bool isnotify = false;
+        byte[] FileFWcontents;
+
         public Service()
         {
             InitializeComponent();
             Search.ble.AdapterStatusChange += Ble_AdapterStatusChange;
-            Search.ble.ServerCallBackEvent += Ble_ServerCallBackEvent;
             listView.ItemsSource = CharacteristicsList; 
             
-        }
-
-        private void Ble_ServerCallBackEvent(string uuid, byte[] value)
-        {
-            Device.BeginInvokeOnMainThread(() => {
-                if (SelectCharacteristic != null)
-                {
-                    if (SelectCharacteristic.Uuid == uuid)
-                    {
-                        string str = BitConverter.ToString(value);
-                        info_read.Text = "CallBack UUID:" + str;
-                    }
-                }
-            });
-
         }
 
         private void Ble_AdapterStatusChange(object sender, AdapterConnectStatus e)
@@ -48,7 +38,7 @@ namespace BLE_TEST
                 if(Search.BleStatus== AdapterConnectStatus.Connected)
                 {
                     msg_txt.Text = "Success";
-                    await Task.Delay(3000);
+                    await Task.Delay(2000);
                     msg_layout.IsVisible = false;
                     listView.IsVisible = true;
                     ReadCharacteristics();
@@ -78,19 +68,25 @@ namespace BLE_TEST
             { 
                 if (c.Uuid == select.Uuid)
                 {
-                    SelectCharacteristic = c;
-                    info_uuid.Text ="UUID:"+SelectCharacteristic.Uuid;
-                    info_read.Text = "CallBack UUID:";
-                    //notify_btn.Text = "Notify";
-                    if (SelectCharacteristic.CanRead()) read_btn.IsVisible = true;
-                    else read_btn.IsVisible = false;
-                    if (SelectCharacteristic.CanWrite()) write_btn.IsVisible = true;
-                    else write_btn.IsVisible = false;
-                    //if (SelectCharacteristic.CanNotify()) notify_btn.IsVisible = true;
-                    //else notify_btn.IsVisible = false;
-                    pickfile_btn.IsVisible = true;
-                    background.IsVisible = true;
-                    info.IsVisible = true;
+                    if(c.CanWrite())
+                    {
+                        SelectCharacteristic = c;
+                        info_uuid.Text = "OTA Write UUID:" + SelectCharacteristic.Uuid;
+                        info_filename.Text = "File Name:";
+                        write_btn.IsVisible = true;
+                        pickfile_btn.IsVisible = true;
+                        background.IsVisible = true;
+                        info.IsVisible = true;
+                    }
+                    else
+                    {
+                        info_uuid.Text = "UUID Cant't Write OTA Code!";
+                        info_filename.Text = "Click in the Background and choose another UUID!";
+                        write_btn.IsVisible = false;
+                        pickfile_btn.IsVisible = false;
+                        background.IsVisible = true;
+                        info.IsVisible = true;
+                    }
                     break;
                 }
             }
@@ -99,7 +95,7 @@ namespace BLE_TEST
         {
             base.OnDisappearing();
             Search.ble.AdapterStatusChange -= Ble_AdapterStatusChange;
-            Search.ble.ServerCallBackEvent -= Ble_ServerCallBackEvent;
+            //Search.ble.ServerCallBackEvent -= Ble_ServerCallBackEvent;
             if (Search.ConnectDevice!=null) Search.ConnectDevice.DisconnectDevice();
         }
 
@@ -108,61 +104,67 @@ namespace BLE_TEST
             background.IsVisible = false;
             info.IsVisible = false;
             SelectCharacteristic = null;
-            if (isnotify)
-            {
-                SelectCharacteristic.StopNotify();
-                SelectCharacteristic.NotifyEvent -= SelectCharacteristic_NotifyEvent;
-            }
+            //if (isnotify)
+            //{
+            //    SelectCharacteristic.StopNotify();
+            //    SelectCharacteristic.NotifyEvent -= SelectCharacteristic_NotifyEvent;
+            //}
         }
 
-        private void read_Clicked(object sender, EventArgs e)
-        {
-            if (SelectCharacteristic != null)
-            {
-                SelectCharacteristic.ReadCallBack();
-            }
-        }
         private void write_Clicked(object sender, EventArgs e)
         {
-           var bytearray = StringToByteArray(info_write.Text);
-            if (bytearray == null)
-            {
-                DisplayAlert("", "Input format error", "ok");
-                return;
-            }
-            SelectCharacteristic.Write(bytearray);
+           //var bytearray = StringToByteArray(info_write.Text);
+            //if (bytearray == null)
+           // {
+                //DisplayAlert("", "Input format error", "ok");
+               // return;
+           // }
+            //SelectCharacteristic.Write(bytearray);
 
         }
-        private void pickfile_Clicked(object sender, EventArgs e)
+        private async void pickfile_Clicked(object sender, EventArgs e)
         {
             if (SelectCharacteristic != null)
             {
-                if (pickfile_btn.Text.ToLower() == "Pick File")
+                await PickAndShow();
+            }
+        
+
+            //if (pickfile_btn.Text.ToLower() == "Pick File")
+            //{
+            //isnotify = true;
+            //pickfile_btn.Text = "Loading";
+            //SelectCharacteristic.NotifyEvent += SelectCharacteristic_NotifyEvent;
+            //SelectCharacteristic.Notify();
+            // }
+            //else
+            //{
+            // isnotify = false;
+            // pickfile_btn.Text = "Pick File";
+            //SelectCharacteristic.StopNotify();
+            //SelectCharacteristic.NotifyEvent -= SelectCharacteristic_NotifyEvent;
+            //}
+        
+        }
+        private async Task PickAndShow()
+        {
+            FileData file = null;
+            try
+            {
+                file = await CrossFilePicker.Current.PickFile().ConfigureAwait(true);
+
+                if (file != null)
                 {
-                    isnotify = true;
-                    pickfile_btn.Text = "Loading";
-                    //SelectCharacteristic.NotifyEvent += SelectCharacteristic_NotifyEvent;
-                    //SelectCharacteristic.Notify();
+                    
+                    info_filename.Text = "The filename:" + file.FileName;
+                    //image.Source = ImageSource.FromStream(() => data);
                 }
-                else
-                {
-                    isnotify = false;
-                    pickfile_btn.Text = "Pick File";
-                    //SelectCharacteristic.StopNotify();
-                    //SelectCharacteristic.NotifyEvent -= SelectCharacteristic_NotifyEvent;
-                }
-               
+            }
+            catch {
+                return;
             }
         }
 
-        private void SelectCharacteristic_NotifyEvent(object sender, byte[] value)
-        {
-            Device.BeginInvokeOnMainThread(() => {
-                string str = BitConverter.ToString(value);
-                info_read.Text = "CallBack UUID:" + str;
-            });
-        }
-       
         public static byte[] StringToByteArray(string hex)
         {
             try

@@ -25,20 +25,20 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "monoandroid90"
+          "monoandroid81"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "monoandroid90": {
+          "monoandroid81": {
             "projectReferences": {}
           }
         }
       },
       "frameworks": {
-        "monoandroid90": {
+        "monoandroid81": {
           "dependencies": {
             "OxyPlot.Xamarin.Android": {
               "target": "Package",
@@ -51,6 +51,10 @@
             "Xamarin.Android.Support.v7.AppCompat": {
               "target": "Package",
               "version": "[27.0.2.1, )"
+            },
+            "Xamarin.Forms": {
+              "target": "Package",
+              "version": "[5.0.0.2515, )"
             },
             "Xamarin.Plugin.FilePicker": {
               "target": "Package",

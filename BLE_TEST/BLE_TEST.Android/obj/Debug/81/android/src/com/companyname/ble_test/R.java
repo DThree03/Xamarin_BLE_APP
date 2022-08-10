@@ -12478,4 +12478,7 @@ public final class R {
      */
     public static final int ViewStubCompat_android_inflatedId=2;
   }
+  public static final class xml {
+    public static final int xamarin_essentials_fileprovider_file_paths=0x7f100000;
+  }
 }
