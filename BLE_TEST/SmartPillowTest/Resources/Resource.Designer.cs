@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("SmartPillowTest.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("OTABootloader.Resource", IsApplication=true)]
 
-namespace SmartPillowTest
+namespace OTABootloader
 {
 	
 	

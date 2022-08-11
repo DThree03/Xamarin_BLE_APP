@@ -4,7 +4,6 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)xamarin.forms\5.0.0.2515\buildTransitive\Xamarin.Forms.targets" Condition="Exists('$(NuGetPackageRoot)xamarin.forms\5.0.0.2515\buildTransitive\Xamarin.Forms.targets')" />
     <Import Project="$(NuGetPackageRoot)xamarin.android.support.annotations\27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets" Condition="Exists('$(NuGetPackageRoot)xamarin.android.support.annotations\27.0.2.1\build\MonoAndroid81\Xamarin.Android.Support.Annotations.targets')" />
     <Import Project="$(NuGetPackageRoot)xamarin.android.arch.lifecycle.common\1.0.3.1\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets" Condition="Exists('$(NuGetPackageRoot)xamarin.android.arch.lifecycle.common\1.0.3.1\build\MonoAndroid80\Xamarin.Android.Arch.Lifecycle.Common.targets')" />
     <Import Project="$(NuGetPackageRoot)xamarin.android.arch.core.common\1.0.0.1\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets" Condition="Exists('$(NuGetPackageRoot)xamarin.android.arch.core.common\1.0.0.1\build\MonoAndroid80\Xamarin.Android.Arch.Core.Common.targets')" />

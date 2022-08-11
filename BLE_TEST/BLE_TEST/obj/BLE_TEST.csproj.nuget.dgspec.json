@@ -56,10 +56,6 @@
               "target": "Package",
               "version": "[1.0.4, )"
             },
-            "Xamarin.Essentials": {
-              "target": "Package",
-              "version": "[1.6.0, )"
-            },
             "Xamarin.Forms": {
               "target": "Package",
               "version": "[3.3.0.967583, )"

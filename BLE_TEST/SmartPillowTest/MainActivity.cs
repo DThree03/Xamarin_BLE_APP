@@ -7,7 +7,6 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Bluetooth;
-using Android.Locations;
 using System.Linq;
 using System.IO;
 using System.Threading;
@@ -19,14 +18,14 @@ using CircularBuffer;
 using ControllerDemo;
 using Plugin.FilePicker;
 using System.Text.RegularExpressions;
-using Xamarin.Forms;
+
 /* Adding oxyplot */
 using OxyPlot.Xamarin.Android;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
-namespace SmartPillowTest
+namespace OTABootloader
 {
     public enum bStateMachineReceivingData : byte { eSM_Step0 = 0, eSM_Step1, eSM_Step2, eSM_Step3, eSM_Step4 };
     public enum MessageIds : byte
@@ -41,12 +40,9 @@ namespace SmartPillowTest
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
-        //BluetoothConnection myConnection = new BluetoothConnection();
-        BluetoothManager _manager;
+        BluetoothConnection myConnection = new BluetoothConnection();
         protected override void OnCreate(Bundle bundle)
         {
-            _manager = (BluetoothManager)Android.App.Application.Context.GetSystemService(Android.Content.Context.BluetoothService);
-            _manager.Adapter.Enable();
             base.OnCreate(bundle);
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
@@ -80,7 +76,15 @@ namespace SmartPillowTest
             {
                 try
                 {
-                    
+                    buttonDisconnect.Enabled = false;
+                    buttonConnect.Enabled = true;
+                    buttonBootloader.Enabled = false;
+                    /* Update UIResponse */
+                    UIResponse.Text = "[UI]:Jump to Bootloader event!";
+                    /* Change content and change flag */
+                    myConnection.thisSocket.OutputStream.WriteAsync(JumptoBootloader, 0, 12);
+                    Task.Delay(500);
+                    Disconnect();
                 }
                 catch { }
             };
@@ -88,9 +92,81 @@ namespace SmartPillowTest
             /* Process button click */
             buttonConnect.Click += delegate
             {
-                try
-                { 
+                /* Get name of device want to connect */
+                string strDeviceConnect;
+                strDeviceConnect = StrInputDeviceName.Text;
+                /* Update UI */
 
+                /* Create bluetooth connection */
+                myConnection = new BluetoothConnection();
+                myConnection.getAdapter();
+                myConnection.thisAdapter.StartDiscovery();
+
+                try
+                {
+                    myConnection.getDevice(strDeviceConnect);
+                    myConnection.thisDevice.SetPairingConfirmation(false);
+                    //   myConnection.thisDevice.Dispose();
+                    myConnection.thisDevice.SetPairingConfirmation(true);
+                    myConnection.thisDevice.CreateBond();
+                }
+                catch (Exception deviceEX)
+                {
+                }
+                /* Start connect */
+                myConnection.thisAdapter.CancelDiscovery();
+                _socket = myConnection.thisDevice.CreateRfcommSocketToServiceRecord(Java.Util.UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
+                myConnection.thisSocket = _socket;
+
+                /* Get bluetooth socket */
+                _bluetoothSocket = _socket;
+                try
+                {
+                    /* Connected state */
+                    myConnection.thisSocket.Connect();
+                    connected.Text = "Connected!";
+                    buttonDisconnect.Enabled = true;
+                    buttonConnect.Enabled = false;
+                    /* Update UI */
+                    buttonPickFile.Enabled = true;
+                    buttonUpgrade.Enabled = true;
+                    buttonBootloader.Enabled = true;
+
+                    /* Call direct listener */
+                    _cancellationSource = new CancellationTokenSource();
+                    var result = Connect(_cancellationSource.Token);
+                    /* Update UIResponse */
+                    UIResponse.Text = "[UI]: Connected event!";
+
+                    /* Clear flag */
+                    bFlagGetTimeStart = false;
+
+                    /* Create timer */
+                    bTimerQuerryReceiveData = new System.Timers.Timer();
+                    bTimerQuerryReceiveData.Interval = 1;//10ms
+                    bTimerQuerryReceiveData.Elapsed += OnTimedEvent;
+                    bTimerQuerryReceiveData.Enabled = true;
+
+                    /* Clear flag */
+                    bRunningProcess = true;
+                    bRunningGet1stPackage = false;
+                    /* Reset variable data */
+                    bNumberBytesPerPackageReceivedCounter = 0;
+                    bNumberBytesReceivedCounter = 0;
+                    bNumberPackageReceivedCounter = 0;
+                    bNumberBytesLastPackage = 0;
+                    bFlagGetTimeStart = false;
+                    /* Clear all buffer */
+                    Array.Clear(ringBufReceivedData, 0, 2048);
+                    Array.Clear(cacheBufReceiveData, 0, 2048);
+                    /* Reset counter */
+                    bIndex = 0;
+                    bCheck1stHeaderByte = 0;
+                    bCounterGetPackageHeader = 0;
+                    bFlagStartGetHeader = 0;
+                    bStateFindPackageInRingBuffer = bStateMachineReceivingData.eSM_Step0;
+                    bDetectErrorFail = 0;
+                    bLastSequence = bCurrentSequence - 1;
                 }
                 catch (Exception CloseEX)
                 {
@@ -141,34 +217,51 @@ namespace SmartPillowTest
             };
         }
 
-        public void OpenLocationSettings()
-        {
-
-            LocationManager LM = (LocationManager)Forms.Context.GetSystemService(Android.Content.Context.LocationService);
-            if (LM.IsProviderEnabled(LocationManager.GpsProvider) == false)
-            {
-                AlertDialog ad = new AlertDialog.Builder(this).Create();
-
-                ad.SetMessage("Please open location");
-                ad.SetCancelable(false);
-                ad.SetCanceledOnTouchOutside(false);
-                ad.SetButton("ok", delegate
-                {
-                    Android.Content.Context ctx = Forms.Context;
-                    ctx.StartActivity(new Intent(Android.Provider.Settings.ActionLocationSourceSettings));
-                });
-
-                ad.SetButton2("cancle", delegate
-                {
-
-                });
-                ad.Show();
-
-            }
-        }
         private void Disconnect()
         {
-            
+            /* Clear process flag */
+            bRunningProcess = false;
+            //  buttonDisconnect.Enabled = false;
+            buttonConnect.Enabled = true;
+            //listenThread.Abort();
+            myConnection.thisDevice.Dispose();
+            myConnection.thisSocket.OutputStream.WriteByte(187);
+            myConnection.thisSocket.OutputStream.Close();
+            myConnection.thisSocket.Close();
+            myConnection = new BluetoothConnection();
+            _socket = null;
+            connected.Text = "Disconnected!";
+            /* Update UIResponse */
+            UIResponse.Text = "[UI]:Disconnected event!";
+
+            /* Change some UI */
+            buttonDisconnect.Enabled = false;
+            buttonUpgrade.Enabled = false;
+            /* Reset */
+            bFlagUpgradeOTA = false;
+            /* Reset all value */
+            bNumberBytesPerPackageReceivedCounter = 0;
+
+            /* Clear flag */
+            bRunningGet1stPackage = false;
+            /* Reset variable data */
+            bNumberBytesPerPackageReceivedCounter = 0;
+            bNumberBytesReceivedCounter = 0;
+            bNumberPackageReceivedCounter = 0;
+            bNumberBytesLastPackage = 0;
+            bFlagGetTimeStart = false;
+            /* Clear all buffer */
+            Array.Clear(ringBufReceivedData, 0, 2048);
+            Array.Clear(cacheBufReceiveData, 0, 2048);
+            /* Reset counter */
+            bIndex = 0;
+            bCheck1stHeaderByte = 0;
+            bCounterGetPackageHeader = 0;
+            bFlagStartGetHeader = 0;
+            bStateFindPackageInRingBuffer = bStateMachineReceivingData.eSM_Step0;
+            bDetectErrorFail = 0;
+            bLastSequence = bCurrentSequence - 1;
+            bTimerQuerryReceiveData.Enabled = false;
         }
         private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -197,7 +290,48 @@ namespace SmartPillowTest
             {
                 try
                 {
-                    
+                    /* Sleep 1s and clear buffer */
+                    Thread.Sleep(1000);
+                    /* Init Xmodem */
+                    var xmodem = new XModem.XModem(_bluetoothSocket, RingBufferOTA);
+                    byte[] data;
+                    data = FileFWcontents;
+                    int bytesSent = 0;
+                    /* Clear all data first */
+                    _bluetoothSocket.InputStream.Flush();
+                    _bluetoothSocket.OutputStream.Flush();
+                    /* Just display process */
+                    xmodem.PacketSent += (sender, args) =>
+                    {
+                        bytesSent += 128;
+                        int Percentage = Math.Min(bytesSent, data.Length) * 100 / data.Length;
+                        //UIResponse.Text = sprintf("Firmware Update: {0}% sent!", Math.Min(bytesSent, data.Length) * 100 / data.Length);
+                        UIResponse.Text = sprintf("Firmware Update: %d precentage sent!", Percentage);
+                    };
+
+                    /* Send all firmare */
+                    int result = xmodem.XmodemTransmit(data, data.Length, false);
+                    if (result < data.Length)
+                    {
+                        UIResponse.Text = sprintf("Update Firmware Fail! Result: %d Length: %d", result, data.Length);
+                    }
+                    else
+                    {
+                        UIResponse.Text = "Update Firmware Success!";
+                    }
+
+                    /* Disconnect bluetooth connection */
+                    myConnection.thisDevice.Dispose();
+                    myConnection.thisSocket.OutputStream.WriteByte(187);
+                    myConnection.thisSocket.OutputStream.Close();
+                    myConnection.thisSocket.Close();
+                    myConnection = new BluetoothConnection();
+                    _bluetoothSocket = null;
+                    connected.Text = "Disconnected!";
+                    /* Enable connect button again */
+                    buttonConnect.Enabled = true;
+                    /* Update UIResponse */
+                    UIResponse.Text = "[UI]:Disconnected event!";
                     
                 }
                 catch { }

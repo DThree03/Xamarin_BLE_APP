@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
+using CircularBuffer;
 using Plugin.FilePicker;
 using Plugin.FilePicker.Abstractions;
-using Xamarin.Essentials;
 
 namespace BLE_TEST
 {
@@ -20,15 +21,31 @@ namespace BLE_TEST
         List<IGattCharacteristic> AllCharacteristics = new List<IGattCharacteristic>();
         IGattCharacteristic SelectCharacteristic = null;
         ObservableCollection<CharacteristicsList> CharacteristicsList = new ObservableCollection<CharacteristicsList>();
-        bool isnotify = false;
+
+        public CircularBuffer<byte> RingBuFTestBuffer, RingBufferOTA;
         byte[] FileFWcontents;
 
         public Service()
         {
             InitializeComponent();
             Search.ble.AdapterStatusChange += Ble_AdapterStatusChange;
+            //Search.ble.ServerCallBackEvent += Ble_ServerCallBackEvent;
             listView.ItemsSource = CharacteristicsList; 
             
+        }
+
+        private void Ble_ServerCallBackEvent(string uuid, byte[] value)
+        {
+            Device.BeginInvokeOnMainThread(() => {
+                if (SelectCharacteristic != null)
+                {
+                    if (SelectCharacteristic.Uuid == uuid)
+                    {
+                        string str = BitConverter.ToString(value);
+                        //info_read.Text = "CallBack UUID:" + str;
+                    }
+                }
+            });
         }
 
         private void Ble_AdapterStatusChange(object sender, AdapterConnectStatus e)
@@ -77,6 +94,8 @@ namespace BLE_TEST
                         pickfile_btn.IsVisible = true;
                         background.IsVisible = true;
                         info.IsVisible = true;
+
+                        RingBufferOTA = new CircularBuffer<byte>(4096);
                     }
                     else
                     {
@@ -104,23 +123,18 @@ namespace BLE_TEST
             background.IsVisible = false;
             info.IsVisible = false;
             SelectCharacteristic = null;
-            //if (isnotify)
-            //{
-            //    SelectCharacteristic.StopNotify();
-            //    SelectCharacteristic.NotifyEvent -= SelectCharacteristic_NotifyEvent;
-            //}
         }
 
-        private void write_Clicked(object sender, EventArgs e)
+        private async void write_Clicked(object sender, EventArgs e)
         {
-           //var bytearray = StringToByteArray(info_write.Text);
+            //var bytearray = StringToByteArray(info_write.Text);
             //if (bytearray == null)
-           // {
-                //DisplayAlert("", "Input format error", "ok");
-               // return;
-           // }
+            // {
+            //DisplayAlert("", "Input format error", "ok");
+            // return;
+            // }
             //SelectCharacteristic.Write(bytearray);
-
+            await Upgrade_OTA_Progress();
         }
         private async void pickfile_Clicked(object sender, EventArgs e)
         {
@@ -157,12 +171,67 @@ namespace BLE_TEST
                 {
                     
                     info_filename.Text = "The filename:" + file.FileName;
+                    FileFWcontents = file.DataArray;
                     //image.Source = ImageSource.FromStream(() => data);
                 }
             }
             catch {
                 return;
             }
+        }
+
+        private async Task Upgrade_OTA_Progress()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    ///* Sleep 1s and clear buffer */
+                    Thread.Sleep(1000);
+                    ///* Init Xmodem */
+                    var xmodem = new XModem.XModem(SelectCharacteristic, RingBufferOTA);
+                    //byte[] data;
+                    //data = FileFWcontents;
+                    //int bytesSent = 0;
+                    ///* Clear all data first */
+                    //_bluetoothSocket.InputStream.Flush();
+                    //_bluetoothSocket.OutputStream.Flush();
+                    ///* Just display process */
+                    //xmodem.PacketSent += (sender, args) =>
+                    //{
+                    //    bytesSent += 128;
+                    //    int Percentage = Math.Min(bytesSent, data.Length) * 100 / data.Length;
+                    //    //UIResponse.Text = sprintf("Firmware Update: {0}% sent!", Math.Min(bytesSent, data.Length) * 100 / data.Length);
+                    //    UIResponse.Text = sprintf("Firmware Update: %d precentage sent!", Percentage);
+                    //};
+
+                    ///* Send all firmare */
+                    //int result = xmodem.XmodemTransmit(data, data.Length, false);
+                    //if (result < data.Length)
+                    //{
+                    //    UIResponse.Text = sprintf("Update Firmware Fail! Result: %d Length: %d", result, data.Length);
+                    //}
+                    //else
+                    //{
+                    //    UIResponse.Text = "Update Firmware Success!";
+                    //}
+
+                    ///* Disconnect bluetooth connection */
+                    //myConnection.thisDevice.Dispose();
+                    //myConnection.thisSocket.OutputStream.WriteByte(187);
+                    //myConnection.thisSocket.OutputStream.Close();
+                    //myConnection.thisSocket.Close();
+                    //myConnection = new BluetoothConnection();
+                    //_bluetoothSocket = null;
+                    //connected.Text = "Disconnected!";
+                    ///* Enable connect button again */
+                    //buttonConnect.Enabled = true;
+                    ///* Update UIResponse */
+                    //UIResponse.Text = "[UI]:Disconnected event!";
+
+                }
+                catch { }
+            });
         }
 
         public static byte[] StringToByteArray(string hex)
