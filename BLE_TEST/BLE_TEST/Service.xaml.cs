@@ -34,20 +34,6 @@ namespace BLE_TEST
             
         }
 
-        private void Ble_ServerCallBackEvent(string uuid, byte[] value)
-        {
-            Device.BeginInvokeOnMainThread(() => {
-                if (SelectCharacteristic != null)
-                {
-                    if (SelectCharacteristic.Uuid == uuid)
-                    {
-                        string str = BitConverter.ToString(value);
-                        //info_read.Text = "CallBack UUID:" + str;
-                    }
-                }
-            });
-        }
-
         private void Ble_AdapterStatusChange(object sender, AdapterConnectStatus e)
         {
             Device.BeginInvokeOnMainThread(async () => {
@@ -190,31 +176,31 @@ namespace BLE_TEST
                     Thread.Sleep(1000);
                     ///* Init Xmodem */
                     var xmodem = new XModem.XModem(SelectCharacteristic, RingBufferOTA);
-                    //byte[] data;
-                    //data = FileFWcontents;
-                    //int bytesSent = 0;
+                    byte[] data;
+                    data = FileFWcontents;
+                    int bytesSent = 0;
                     ///* Clear all data first */
                     //_bluetoothSocket.InputStream.Flush();
                     //_bluetoothSocket.OutputStream.Flush();
                     ///* Just display process */
-                    //xmodem.PacketSent += (sender, args) =>
-                    //{
-                    //    bytesSent += 128;
-                    //    int Percentage = Math.Min(bytesSent, data.Length) * 100 / data.Length;
-                    //    //UIResponse.Text = sprintf("Firmware Update: {0}% sent!", Math.Min(bytesSent, data.Length) * 100 / data.Length);
+                    xmodem.PacketSent += (sender, args) =>
+                    {
+                        bytesSent += 128;
+                        int Percentage = Math.Min(bytesSent, data.Length) * 100 / data.Length;
+                        //UIResponse.Text = sprintf("Firmware Update: {0}% sent!", Math.Min(bytesSent, data.Length) * 100 / data.Length);
                     //    UIResponse.Text = sprintf("Firmware Update: %d precentage sent!", Percentage);
-                    //};
+                    };
 
                     ///* Send all firmare */
-                    //int result = xmodem.XmodemTransmit(data, data.Length, false);
-                    //if (result < data.Length)
-                    //{
+                    int result = xmodem.XmodemTransmit(data, data.Length, false);
+                    if (result < data.Length)
+                    {
                     //    UIResponse.Text = sprintf("Update Firmware Fail! Result: %d Length: %d", result, data.Length);
-                    //}
-                    //else
-                    //{
+                    }
+                    else
+                    {
                     //    UIResponse.Text = "Update Firmware Success!";
-                    //}
+                    }
 
                     ///* Disconnect bluetooth connection */
                     //myConnection.thisDevice.Dispose();
