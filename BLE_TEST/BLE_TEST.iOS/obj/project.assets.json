@@ -136,25 +136,12 @@
           "build/Xamarin.Forms.targets": {}
         }
       },
-      "Xamarin.Plugin.FilePicker/2.1.41": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Drawing.Common.dll"
-        ],
-        "compile": {
-          "lib/xamarinios10/Plugin.FilePicker.dll": {}
-        },
-        "runtime": {
-          "lib/xamarinios10/Plugin.FilePicker.dll": {}
-        }
-      },
       "BLE_TEST/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Quick.Xamarin.BLE": "1.0.4",
-          "Xamarin.Forms": "3.3.0.967583",
-          "Xamarin.Plugin.FilePicker": "2.1.41"
+          "Xamarin.Forms": "3.3.0.967583"
         },
         "compile": {
           "bin/placeholder/BLE_TEST.dll": {}
@@ -299,25 +286,12 @@
           "build/Xamarin.Forms.targets": {}
         }
       },
-      "Xamarin.Plugin.FilePicker/2.1.41": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Drawing.Common.dll"
-        ],
-        "compile": {
-          "lib/xamarinios10/Plugin.FilePicker.dll": {}
-        },
-        "runtime": {
-          "lib/xamarinios10/Plugin.FilePicker.dll": {}
-        }
-      },
       "BLE_TEST/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Quick.Xamarin.BLE": "1.0.4",
-          "Xamarin.Forms": "3.3.0.967583",
-          "Xamarin.Plugin.FilePicker": "2.1.41"
+          "Xamarin.Forms": "3.3.0.967583"
         },
         "compile": {
           "bin/placeholder/BLE_TEST.dll": {}
@@ -462,25 +436,12 @@
           "build/Xamarin.Forms.targets": {}
         }
       },
-      "Xamarin.Plugin.FilePicker/2.1.41": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Drawing.Common.dll"
-        ],
-        "compile": {
-          "lib/xamarinios10/Plugin.FilePicker.dll": {}
-        },
-        "runtime": {
-          "lib/xamarinios10/Plugin.FilePicker.dll": {}
-        }
-      },
       "BLE_TEST/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Quick.Xamarin.BLE": "1.0.4",
-          "Xamarin.Forms": "3.3.0.967583",
-          "Xamarin.Plugin.FilePicker": "2.1.41"
+          "Xamarin.Forms": "3.3.0.967583"
         },
         "compile": {
           "bin/placeholder/BLE_TEST.dll": {}
@@ -625,25 +586,12 @@
           "build/Xamarin.Forms.targets": {}
         }
       },
-      "Xamarin.Plugin.FilePicker/2.1.41": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Drawing.Common.dll"
-        ],
-        "compile": {
-          "lib/xamarinios10/Plugin.FilePicker.dll": {}
-        },
-        "runtime": {
-          "lib/xamarinios10/Plugin.FilePicker.dll": {}
-        }
-      },
       "BLE_TEST/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Quick.Xamarin.BLE": "1.0.4",
-          "Xamarin.Forms": "3.3.0.967583",
-          "Xamarin.Plugin.FilePicker": "2.1.41"
+          "Xamarin.Forms": "3.3.0.967583"
         },
         "compile": {
           "bin/placeholder/BLE_TEST.dll": {}
@@ -663,8 +611,10 @@
         ".nupkg.metadata",
         ".signature.p7s",
         "lib/MonoAndroid10/Quick.Xamarin.BLE.Abstractions.dll",
+        "lib/MonoAndroid10/Quick.Xamarin.BLE.Abstractions.dll.mdb",
         "lib/MonoAndroid10/Quick.Xamarin.BLE.Abstractions.pdb",
         "lib/MonoAndroid10/Quick.Xamarin.BLE.dll",
+        "lib/MonoAndroid10/Quick.Xamarin.BLE.dll.mdb",
         "lib/MonoAndroid10/Quick.Xamarin.BLE.pdb",
         "lib/Xamarin.iOS10/Quick.Xamarin.BLE.Abstractions.dll",
         "lib/Xamarin.iOS10/Quick.Xamarin.BLE.Abstractions.pdb",
@@ -708,11 +658,13 @@
         "lib/MonoAndroid10/Design/Xamarin.Forms.Core.Design.dll",
         "lib/MonoAndroid10/Design/Xamarin.Forms.Xaml.Design.dll",
         "lib/MonoAndroid10/FormsViewGroup.dll",
+        "lib/MonoAndroid10/FormsViewGroup.dll.mdb",
         "lib/MonoAndroid10/FormsViewGroup.pdb",
         "lib/MonoAndroid10/Xamarin.Forms.Core.dll",
         "lib/MonoAndroid10/Xamarin.Forms.Core.pdb",
         "lib/MonoAndroid10/Xamarin.Forms.Core.xml",
         "lib/MonoAndroid10/Xamarin.Forms.Platform.Android.dll",
+        "lib/MonoAndroid10/Xamarin.Forms.Platform.Android.dll.mdb",
         "lib/MonoAndroid10/Xamarin.Forms.Platform.Android.pdb",
         "lib/MonoAndroid10/Xamarin.Forms.Platform.dll",
         "lib/MonoAndroid10/Xamarin.Forms.Xaml.dll",
@@ -822,48 +774,6 @@
         "lib/uap10.0/Xamarin.Forms.Xaml.xml",
         "xamarin.forms.3.3.0.967583.nupkg.sha512",
         "xamarin.forms.nuspec"
-      ]
-    },
-    "Xamarin.Plugin.FilePicker/2.1.41": {
-      "sha512": "SFJp7AEq6YFZ72mw+CxGMQcMzBYhA0b5NkhSyE5b+prCiNli7bKI5pWOT+mbyFng0En8LfeY0dEbedpkecQFQw==",
-      "type": "package",
-      "path": "xamarin.plugin.filepicker/2.1.41",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/monoandroid10.0/Plugin.FilePicker.dll",
-        "lib/monoandroid10.0/Plugin.FilePicker.pdb",
-        "lib/monoandroid10.0/Plugin.FilePicker.xml",
-        "lib/monoandroid80/Plugin.FilePicker.dll",
-        "lib/monoandroid80/Plugin.FilePicker.pdb",
-        "lib/monoandroid80/Plugin.FilePicker.xml",
-        "lib/monoandroid81/Plugin.FilePicker.dll",
-        "lib/monoandroid81/Plugin.FilePicker.pdb",
-        "lib/monoandroid81/Plugin.FilePicker.xml",
-        "lib/monoandroid90/Plugin.FilePicker.dll",
-        "lib/monoandroid90/Plugin.FilePicker.pdb",
-        "lib/monoandroid90/Plugin.FilePicker.xml",
-        "lib/net45/Plugin.FilePicker.dll",
-        "lib/net45/Plugin.FilePicker.pdb",
-        "lib/net45/Plugin.FilePicker.xml",
-        "lib/netstandard1.0/Plugin.FilePicker.dll",
-        "lib/netstandard1.0/Plugin.FilePicker.pdb",
-        "lib/netstandard1.0/Plugin.FilePicker.xml",
-        "lib/netstandard2.0/Plugin.FilePicker.dll",
-        "lib/netstandard2.0/Plugin.FilePicker.pdb",
-        "lib/netstandard2.0/Plugin.FilePicker.xml",
-        "lib/uap10.0.16299/Plugin.FilePicker.dll",
-        "lib/uap10.0.16299/Plugin.FilePicker.pdb",
-        "lib/uap10.0.16299/Plugin.FilePicker.pri",
-        "lib/uap10.0.16299/Plugin.FilePicker.xml",
-        "lib/xamarinios10/Plugin.FilePicker.dll",
-        "lib/xamarinios10/Plugin.FilePicker.pdb",
-        "lib/xamarinios10/Plugin.FilePicker.xml",
-        "lib/xamarinmac20/Plugin.FilePicker.dll",
-        "lib/xamarinmac20/Plugin.FilePicker.pdb",
-        "lib/xamarinmac20/Plugin.FilePicker.xml",
-        "xamarin.plugin.filepicker.2.1.41.nupkg.sha512",
-        "xamarin.plugin.filepicker.nuspec"
       ]
     },
     "BLE_TEST/1.0.0": {

@@ -9,8 +9,8 @@
         <StackLayout x:Name="msg_layout" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Label x:Name="msg_txt" Text="Connecting..." TextColor="#243A99"  HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="20"/>
         </StackLayout>
-        <!--list view-->
-        <ListView x:Name="listView" IsVisible="False" HeightRequest="200"   HasUnevenRows="True" SelectionMode="None" ItemTapped="ListView_ItemTapped">
+        <!--list view
+        <ListView x:Name="listView" IsVisible="False" HeightRequest="200"   HasUnevenRows="True" SelectionMode="None"   ItemTapped="ListView_ItemTapped">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -26,23 +26,25 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <!--info view-->
+        
         <StackLayout x:Name="background" IsVisible="False" BackgroundColor="#000" Opacity=".7" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <StackLayout.GestureRecognizers>
                 <TapGestureRecognizer Tapped="background_click"/>
             </StackLayout.GestureRecognizers>
-        </StackLayout>
-        <StackLayout x:Name="info" IsVisible="False" Padding="10,10,10,10" Margin="50,80,50,80" BackgroundColor="#fff"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <StackLayout>
-                <Label x:Name="info_uuid"  FontSize="14" Margin="0,0,0,20"/>
-                <Label x:Name="info_filename" Text="File Name:"  FontSize="14" Margin="0,0,0,20" />
+        </StackLayout>  -->
+        
+        <StackLayout x:Name="info" IsVisible="False" Padding="10,10,10,10" Margin="20,50,20,50" BackgroundColor="#fff"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout>
+                <Label x:Name="info_uuid"  FontSize="14" Margin="0,0,0,10"/>
+                <Label x:Name="info_read" Text="Read Data:"  FontSize="14" Margin="0,0,0,10" />
+                <Entry x:Name="info_write"   Margin="0,0,0,2" />
+                <!--Label  Text="ex:Input 012fa1=[0x01 0x2f 0xa1]"  FontSize="12"/-->
             </StackLayout>
-            <Button x:Name="pickfile_btn" Text="Pick File" Clicked="pickfile_Clicked" HorizontalOptions="FillAndExpand"/>
-            <Button x:Name="write_btn" Text="Write" Clicked="write_Clicked" HorizontalOptions="FillAndExpand"/>
-            
-            <!--StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand"-->
-                
-            <!--/StackLayout-->
+            <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
+                <Button x:Name="read_btn" Text="Read" Clicked="read_Clicked" HorizontalOptions="CenterAndExpand"/>
+                <Button x:Name="write_btn" Text="Write" Clicked="write_Clicked" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+            <Button x:Name="upgrade_btn" Text="Upgrade FW" Clicked="upgrade_Clicked" HorizontalOptions="FillAndExpand"/>
         </StackLayout>
 
     </Grid>

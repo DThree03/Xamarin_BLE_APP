@@ -24,12 +24,10 @@ namespace BLE_TEST.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
             _manager = (BluetoothManager)Android.App.Application.Context.GetSystemService(Android.Content.Context.BluetoothService);
             _manager.Adapter.Enable();
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-
             LoadApplication(new App());
             int add = 0;
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted)
@@ -60,16 +58,16 @@ namespace BLE_TEST.Droid
             {
                 AlertDialog ad = new AlertDialog.Builder(this).Create();
 
-                ad.SetMessage("Please open location!");
+                ad.SetMessage("Please open location");
                 ad.SetCancelable(false);
                 ad.SetCanceledOnTouchOutside(false);
-                ad.SetButton("OK", delegate
+                ad.SetButton("ok", delegate
                 {
                     Android.Content.Context ctx = Forms.Context;
                     ctx.StartActivity(new Intent(Android.Provider.Settings.ActionLocationSourceSettings));
                 });
 
-                ad.SetButton2("Cancle", delegate
+                ad.SetButton2("cancle", delegate
                 {
 
                 });

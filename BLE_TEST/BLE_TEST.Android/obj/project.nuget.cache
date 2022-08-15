@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "VEPPyjQZCrqwVM72rg41ykY2YKxxufVCGVbPQYunPnw9iWb0UUbnKmCP0g9ewzkg6W9c3oHH2mFuAIXuJp0YtQ==",
+  "dgSpecHash": "OdAeavrV4oB6IHomKZ8nHamLo9dtH7UGmqtacqAhnA3yY8CLrauDDBn7o8BpcLsN3/qNyZsnZW7/W00zgJuWaw==",
   "success": true,
   "projectFilePath": "E:\\PRODUCTION\\1.Freelance\\5.BLE\\4.Software\\Xamarin.BLE.TEST\\BLE_TEST\\BLE_TEST.Android\\BLE_TEST.Android.csproj",
   "expectedPackageFiles": [
@@ -24,8 +24,7 @@
     "C:\\Users\\DThree\\.nuget\\packages\\xamarin.android.support.v7.palette\\27.0.2.1\\xamarin.android.support.v7.palette.27.0.2.1.nupkg.sha512",
     "C:\\Users\\DThree\\.nuget\\packages\\xamarin.android.support.v7.recyclerview\\27.0.2.1\\xamarin.android.support.v7.recyclerview.27.0.2.1.nupkg.sha512",
     "C:\\Users\\DThree\\.nuget\\packages\\xamarin.android.support.vector.drawable\\27.0.2.1\\xamarin.android.support.vector.drawable.27.0.2.1.nupkg.sha512",
-    "C:\\Users\\DThree\\.nuget\\packages\\xamarin.forms\\3.3.0.967583\\xamarin.forms.3.3.0.967583.nupkg.sha512",
-    "C:\\Users\\DThree\\.nuget\\packages\\xamarin.plugin.filepicker\\2.1.41\\xamarin.plugin.filepicker.2.1.41.nupkg.sha512"
+    "C:\\Users\\DThree\\.nuget\\packages\\xamarin.forms\\3.3.0.967583\\xamarin.forms.3.3.0.967583.nupkg.sha512"
   ],
   "logs": []
 }

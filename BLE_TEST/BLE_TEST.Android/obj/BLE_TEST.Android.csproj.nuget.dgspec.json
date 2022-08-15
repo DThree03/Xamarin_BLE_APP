@@ -25,14 +25,14 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "monoandroid81"
+          "monoandroid10.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "monoandroid81": {
+          "monoandroid10.0": {
             "projectReferences": {
               "E:\\PRODUCTION\\1.Freelance\\5.BLE\\4.Software\\Xamarin.BLE.TEST\\BLE_TEST\\BLE_TEST\\BLE_TEST.csproj": {
                 "projectPath": "E:\\PRODUCTION\\1.Freelance\\5.BLE\\4.Software\\Xamarin.BLE.TEST\\BLE_TEST\\BLE_TEST\\BLE_TEST.csproj"
@@ -42,7 +42,7 @@
         }
       },
       "frameworks": {
-        "monoandroid81": {
+        "monoandroid10.0": {
           "dependencies": {
             "Quick.Xamarin.BLE": {
               "target": "Package",
@@ -131,10 +131,6 @@
             "Xamarin.Forms": {
               "target": "Package",
               "version": "[3.3.0.967583, )"
-            },
-            "Xamarin.Plugin.FilePicker": {
-              "target": "Package",
-              "version": "[2.1.41, )"
             }
           },
           "imports": [

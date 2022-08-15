@@ -122,10 +122,6 @@
             "Xamarin.Forms": {
               "target": "Package",
               "version": "[3.3.0.967583, )"
-            },
-            "Xamarin.Plugin.FilePicker": {
-              "target": "Package",
-              "version": "[2.1.41, )"
             }
           },
           "imports": [
