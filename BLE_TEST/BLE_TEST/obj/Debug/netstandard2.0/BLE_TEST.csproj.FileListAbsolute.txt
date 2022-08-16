@@ -28,7 +28,6 @@ E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Quick.Xamarin.BLE\Sample\BLE_TEST\BLE
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\bin\Debug\netstandard2.0\BLE_TEST.deps.json
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\bin\Debug\netstandard2.0\BLE_TEST.dll
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\bin\Debug\netstandard2.0\BLE_TEST.pdb
-E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\obj\Debug\netstandard2.0\BLE_TEST.csproj.AssemblyReference.cache
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\obj\Debug\netstandard2.0\BLE_TEST.GeneratedMSBuildEditorConfig.editorconfig
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\obj\Debug\netstandard2.0\App.xaml.g.cs
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\obj\Debug\netstandard2.0\Search.xaml.g.cs

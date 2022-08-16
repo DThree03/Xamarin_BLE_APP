@@ -24,6 +24,7 @@ namespace BLE_TEST
         IGattCharacteristic TxCharacteristic = null;
         IGattCharacteristic RxCharacteristic = null;
 
+        bool isnotify = false;
         byte[] FileFWcontents;
         public static byte[] RxData;
         public CircularBuffer<byte> RingBuFTestBuffer, RingBufferOTA;
@@ -31,25 +32,8 @@ namespace BLE_TEST
         {
             InitializeComponent();
             Search.ble.AdapterStatusChange += Ble_AdapterStatusChange;
-            Search.ble.ServerCallBackEvent += Ble_ServerCallBackEvent;
         }
-
-        private void Ble_ServerCallBackEvent(string uuid, byte[] value)
-        {
-            Device.BeginInvokeOnMainThread(() => {
-                if (RxCharacteristic != null)
-                {
-                    if (RxCharacteristic.Uuid == uuid)
-                    {
-                        RxData = value;
-                        string str = BitConverter.ToString(RxData);
-                        //string str = RxData[0].ToString();
-                        info_read.Text = "Read Data:" + str;
-                    }
-                }
-            });
-        }
-
+       
         private void Ble_AdapterStatusChange(object sender, AdapterConnectStatus e)
         {
             Device.BeginInvokeOnMainThread(async () => {
@@ -63,15 +47,16 @@ namespace BLE_TEST
                     ReadCharacteristics();
                     await Task.Delay(4000);
                     foreach (var c in AllCharacteristics)
-                    { 
-                        if (c.CanNotify() || c.CanRead())
+                    {
+                        //if (c.CanNotify() || c.CanRead())
+                        if (c.CanNotify())
                         {
                             RxCharacteristic = c;
 
                             read_btn.IsVisible = true;
                             pickfile_btn.IsVisible = true;
   
-                            info_read.Text = "Read Data:";
+                            info_read.Text = "Notify Data:";
                         }
                         else if (c.CanWrite())
                         {
@@ -103,22 +88,36 @@ namespace BLE_TEST
                 });
             } );
         }
-       
-        //protected override void OnDisappearing()
-        //{
-        //    base.OnDisappearing();
-        //    Search.ble.AdapterStatusChange -= Ble_AdapterStatusChange;
-        //    Search.ble.ServerCallBackEvent -= Ble_ServerCallBackEvent;
-        //    if (Search.ConnectDevice!=null) Search.ConnectDevice.DisconnectDevice();
-        //}
-
+ 
         private void read_Clicked(object sender, EventArgs e)
         {
             if (RxCharacteristic != null)
             {
-                RxCharacteristic.ReadCallBack();
+                if (read_btn.Text.ToLower() == "read")
+                {
+                    isnotify = true;
+                    read_btn.Text = "Stop Read";
+                    RxCharacteristic.NotifyEvent += SelectCharacteristic_NotifyEvent;
+                    RxCharacteristic.Notify();
+                }
+                else
+                {
+                    isnotify = false;
+                    read_btn.Text = "Read";
+                    info_read.Text = "Notify Data:";
+                    RxCharacteristic.StopNotify();
+                    RxCharacteristic.NotifyEvent -= SelectCharacteristic_NotifyEvent;
+                }
             }
-            
+        }
+
+        private void SelectCharacteristic_NotifyEvent(object sender, byte[] value)
+        {
+            Device.BeginInvokeOnMainThread(() => {
+                RxData = value;
+                string str = BitConverter.ToString(RxData);
+                info_read.Text = "Notify Data:" + str;
+            });
         }
         private void write_Clicked(object sender, EventArgs e)
         {
@@ -129,6 +128,7 @@ namespace BLE_TEST
                 return;
             }
             TxCharacteristic.Write(bytearray);
+            info_write.Text = "";
         }
 
         private async void pickfile_Clicked(object sender, EventArgs e)
