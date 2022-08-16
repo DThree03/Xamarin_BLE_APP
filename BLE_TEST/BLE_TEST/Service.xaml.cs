@@ -128,7 +128,6 @@ namespace BLE_TEST
                 return;
             }
             TxCharacteristic.Write(bytearray);
-            info_write.Text = "";
         }
 
         private async void pickfile_Clicked(object sender, EventArgs e)
