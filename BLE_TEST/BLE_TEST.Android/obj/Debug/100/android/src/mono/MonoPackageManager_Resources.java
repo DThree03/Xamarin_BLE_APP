@@ -5,6 +5,7 @@ public class MonoPackageManager_Resources {
 		"BLE_TEST.Android.dll",
 		"BLE_TEST.dll",
 		"FormsViewGroup.dll",
+		"Plugin.FilePicker.dll",
 		"Quick.Xamarin.BLE.Abstractions.dll",
 		"Quick.Xamarin.BLE.dll",
 		"Xamarin.Android.Arch.Core.Common.dll",

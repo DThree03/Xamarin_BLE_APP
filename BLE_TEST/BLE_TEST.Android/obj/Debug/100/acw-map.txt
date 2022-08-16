@@ -1,6 +1,9 @@
 BLE_TEST.Droid.MainActivity, BLE_TEST.Android;crc642748cd8b0514fa9d.MainActivity
 BLE_TEST.Droid.MainActivity;crc642748cd8b0514fa9d.MainActivity
 ble_test.droid.MainActivity;crc642748cd8b0514fa9d.MainActivity
+Plugin.FilePicker.FilePickerActivity, Plugin.FilePicker;crc64424a8adc5a1fbe28.FilePickerActivity
+Plugin.FilePicker.FilePickerActivity;crc64424a8adc5a1fbe28.FilePickerActivity
+plugin.filepicker.FilePickerActivity;crc64424a8adc5a1fbe28.FilePickerActivity
 Quick.Xamarin.BLE.Ble, Quick.Xamarin.BLE;crc648203361843190f5f.Ble
 Quick.Xamarin.BLE.Ble;crc648203361843190f5f.Ble
 quick.xamarin.ble.Ble;crc648203361843190f5f.Ble

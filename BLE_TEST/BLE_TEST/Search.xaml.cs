@@ -27,17 +27,13 @@ namespace BLE_TEST
           
             BleStatus = ble.AdapterConnectStatus;
             listView.ItemsSource = blelist;
-
-          
         }
 
         private void Ble_OnScanDevicesIn(object sender, IDev e)
         {
             Device.BeginInvokeOnMainThread(() => {
-                
                 try
                 {
-                    
                     if (e.Name != null)
                     {
                         var n = ScanDevices.Find(x => x.Uuid == e.Uuid);
@@ -50,7 +46,6 @@ namespace BLE_TEST
                     }
                 }
                 catch {}
- 
             });
         } 
     
@@ -67,7 +62,7 @@ namespace BLE_TEST
                     {
                         ConnectDevice = dev;
                         ConnectDevice.ConnectToDevice();
-                        Navigation.PushAsync(new Service(), false);
+                        await Navigation.PushAsync(new Service(), false);
                         
                     }
                 }

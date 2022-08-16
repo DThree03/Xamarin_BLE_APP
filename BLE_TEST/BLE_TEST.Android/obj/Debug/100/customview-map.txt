@@ -8,8 +8,8 @@ color;obj\Debug\100\res\values\colors.xml
 foreground;obj\Debug\100\res\mipmap-anydpi-v26\icon.xml
 foreground;obj\Debug\100\res\mipmap-anydpi-v26\icon_round.xml
 item;obj\Debug\100\res\values\styles.xml
-resources;E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST.Android\obj\Debug\100\lp\1\jl\res\values\strings.xml
+resources;E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST.Android\obj\Debug\100\lp\2\jl\res\values\strings.xml
 resources;obj\Debug\100\res\values\colors.xml
 resources;obj\Debug\100\res\values\styles.xml
-string;E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST.Android\obj\Debug\100\lp\1\jl\res\values\strings.xml
+string;E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST.Android\obj\Debug\100\lp\2\jl\res\values\strings.xml
 style;obj\Debug\100\res\values\styles.xml
