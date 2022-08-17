@@ -4,6 +4,8 @@ using System.Threading;
 using CircularBuffer;
 using System.Threading.Tasks;
 
+using Xamarin.Forms;
+
 using Quick.Xamarin.BLE;
 using Quick.Xamarin.BLE.Abstractions;
 using BLE_TEST;
@@ -36,7 +38,7 @@ namespace XModem
         #endregion
 
         #region Members
-
+        byte[] RxData;
         IGattCharacteristic RxPort = null;
         IGattCharacteristic TxPort = null;
 
@@ -44,18 +46,18 @@ namespace XModem
 
 
         private byte SOH = 0x01; //header for 128byte-pakets 
-        private byte STX = 0x02; //header for 1024byte-pakets 
+        private byte STX = 0x02; //header for 1024byte-pakets
         private byte EOT = 0x04; //end of transmission 
-        private byte ACK = 0x06; //acknowledge
-        private byte NAK = 0x15; //negativ acknowledge
+        private byte ACK = 0x06; //acknowledge      1
+        private byte NAK = 0x15; //negativ acknowledge 2
         private byte CAN = 0x18; //cancel transfer
         private byte CTRLZ = 0x1A; //padding char to fill data blocks < buffer size
-        private byte C = 0x43; //start of a CRC request
+        private byte C = 0x43; //start of a CRC request 3
 
         private ushort MAXRETRANS = 25;
 
         //1024 for XModem 1k + 3 head chars + 2 crc + nul
-        private byte[] xbuff = new byte[1030]; 
+        private byte[] xbuff = new byte[134]; 
 
         private int bufsz, crc = -1;
         private byte packetno = 1;
@@ -72,6 +74,9 @@ namespace XModem
             this.TxPort = txport;
 
             this.ReceivedBuffer = bReceiveBuffer;
+            RxData = null;
+            this.RxPort.NotifyEvent += Readbyte_NotifyEvent;
+            this.RxPort.Notify();
         }
 
         #endregion
@@ -246,6 +251,9 @@ namespace XModem
                         {
                             this.writeByte(ACK);
                             //port.DiscardInBuffer();
+                            this.RxPort.StopNotify();
+                            this.RxPort.NotifyEvent -= Readbyte_NotifyEvent;
+
                             return -1;
                         }
                     #endregion
@@ -257,6 +265,9 @@ namespace XModem
             this.writeByte(CAN);
             this.writeByte(CAN);
             //port.DiscardInBuffer();
+            this.RxPort.StopNotify();
+            this.RxPort.NotifyEvent -= Readbyte_NotifyEvent;
+
             return -2; //no sync
         }
 
@@ -326,7 +337,7 @@ namespace XModem
                             if (c == ACK)
                             {
                                 if (this.PacketSent != null)
-                                PacketSent(this, null);
+                                    PacketSent(this, null);
                 
                                 ++packetno;
                                 len += bufsz;
@@ -336,9 +347,12 @@ namespace XModem
                             {
                                 if ((c = readByte()) == CAN)
                                 {
-                                this.writeByte(ACK);
-                                //port.DiscardInBuffer();
-                                return -1; //canceled by remote
+                                    this.writeByte(ACK);
+                                    //port.DiscardInBuffer();
+                                    this.RxPort.StopNotify();
+                                    this.RxPort.NotifyEvent -= Readbyte_NotifyEvent;
+
+                                    return -1; //canceled by remote
                                 }
                             }
                             if (c == NAK)
@@ -356,6 +370,9 @@ namespace XModem
                         this.writeByte(CAN);
                         this.writeByte(CAN);
                         //port.DiscardInBuffer();
+                        this.RxPort.StopNotify();
+                        this.RxPort.NotifyEvent -= Readbyte_NotifyEvent;
+
                         return -4;
 
                         #endregion
@@ -374,6 +391,9 @@ namespace XModem
                         break;
                     }
                     ////port.DiscardInBuffer();
+                    this.RxPort.StopNotify();
+                    this.RxPort.NotifyEvent -= Readbyte_NotifyEvent;
+
                     return (c == ACK) ? len : -5;
                     #endregion
                 }
@@ -386,18 +406,28 @@ namespace XModem
 
         #region a few really cool C-style functions ;)
 
+        private void Readbyte_NotifyEvent(object sender, byte[] value)
+        {
+            Device.BeginInvokeOnMainThread(() => {
+                RxData = value;
+            });
+        }
+
         private byte readByte()
         {
             byte bByteReceive = 0;
             if (this.RxPort != null)
             {
-                this.RxPort.ReadCallBack();
-                while (Service.RxData == null)
+                //this.RxPort.NotifyEvent += Readbyte_NotifyEvent;
+                //this.RxPort.Notify();
+                while (RxData == null)
                 {
                     Thread.Sleep(1);
-                };
-                bByteReceive = Service.RxData[0];
-                Service.RxData = null;
+                }
+                bByteReceive = RxData[0];
+                //this.RxPort.StopNotify();
+                //this.RxPort.NotifyEvent -= Readbyte_NotifyEvent;
+                RxData = null;
             }
             return bByteReceive;
         }

@@ -26,8 +26,8 @@ namespace BLE_TEST
 
         bool isnotify = false;
         byte[] FileFWcontents;
-        public static byte[] RxData;
-        public CircularBuffer<byte> RingBuFTestBuffer, RingBufferOTA;
+        
+        CircularBuffer<byte> RingBufferOTA;
         public Service()
         {
             InitializeComponent();
@@ -114,8 +114,7 @@ namespace BLE_TEST
         private void SelectCharacteristic_NotifyEvent(object sender, byte[] value)
         {
             Device.BeginInvokeOnMainThread(() => {
-                RxData = value;
-                string str = BitConverter.ToString(RxData);
+                string str = BitConverter.ToString(value);
                 info_read.Text = "Notify Data:" + str;
             });
         }
@@ -149,6 +148,8 @@ namespace BLE_TEST
         {
             if ((RxCharacteristic != null) && (TxCharacteristic != null))
             {
+                upgrade_btn.IsVisible = false;
+
                 await Upgrade_OTA_Progress();
             }
         }
@@ -167,16 +168,16 @@ namespace BLE_TEST
                     data = FileFWcontents;
                     int bytesSent = 0;
                     /* Clear all data first */
-                    RxData = null;
                     //_bluetoothSocket.InputStream.Flush();
                     //_bluetoothSocket.OutputStream.Flush();
                     /* Just display process */
                     xmodem.PacketSent += (sender, args) =>
                     {
                         bytesSent += 128;
-                        int Percentage = Math.Min(bytesSent, data.Length) * 100 / data.Length;
-                        //UIResponse.Text = sprintf("Firmware Update: {0}% sent!", Math.Min(bytesSent, data.Length) * 100 / data.Length);
-                        //UIResponse.Text = sprintf("Firmware Update: %d precentage sent!", Percentage);
+                        int Percentage = (int)(Math.Min(bytesSent, data.Length)*100/data.Length);
+                        Device.BeginInvokeOnMainThread(() => {
+                            info_read.Text = string.Format("Loading: {0}%", Percentage);
+                        });
                     };
 
                     /* Send all firmare */
