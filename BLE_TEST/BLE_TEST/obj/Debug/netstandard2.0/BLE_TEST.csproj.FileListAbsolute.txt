@@ -38,3 +38,4 @@ E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\ob
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\obj\Debug\netstandard2.0\XamlC.stamp
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\obj\Debug\netstandard2.0\BLE_TEST.dll
 E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\obj\Debug\netstandard2.0\BLE_TEST.pdb
+E:\PRODUCTION\1.Freelance\5.BLE\4.Software\Xamarin.BLE.TEST\BLE_TEST\BLE_TEST\obj\Debug\netstandard2.0\BLE_TEST.csproj.AssemblyReference.cache

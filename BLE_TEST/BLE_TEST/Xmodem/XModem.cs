@@ -57,7 +57,7 @@ namespace XModem
         private ushort MAXRETRANS = 25;
 
         //1024 for XModem 1k + 3 head chars + 2 crc + nul
-        private byte[] xbuff = new byte[134]; 
+        private byte[] xbuff = new byte[22]; 
 
         private int bufsz, crc = -1;
         private byte packetno = 1;
@@ -279,7 +279,8 @@ namespace XModem
         {
             while (true)
             {
-                bufsz = use1K ? 1024 : 128;
+                //bufsz = use1K ? 1024 : 128;
+                bufsz = use1K ? 128 : 16;
 
                 xbuff[0] = use1K ? STX : SOH;
                 xbuff[1] = packetno;

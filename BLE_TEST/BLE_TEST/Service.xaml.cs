@@ -28,6 +28,7 @@ namespace BLE_TEST
         byte[] FileFWcontents;
         
         CircularBuffer<byte> RingBufferOTA;
+
         public Service()
         {
             InitializeComponent();
@@ -167,13 +168,10 @@ namespace BLE_TEST
                     byte[] data;
                     data = FileFWcontents;
                     int bytesSent = 0;
-                    /* Clear all data first */
-                    //_bluetoothSocket.InputStream.Flush();
-                    //_bluetoothSocket.OutputStream.Flush();
                     /* Just display process */
                     xmodem.PacketSent += (sender, args) =>
                     {
-                        bytesSent += 128;
+                        bytesSent += 16;
                         int Percentage = (int)(Math.Min(bytesSent, data.Length)*100/data.Length);
                         Device.BeginInvokeOnMainThread(() => {
                             info_read.Text = string.Format("Loading: {0}%", Percentage);
@@ -186,26 +184,13 @@ namespace BLE_TEST
 
                     if (result < data.Length)
                     {
-                        //UIResponse.Text = sprintf("Update Firmware Fail! Result: %d Length: %d", result, data.Length);
                         info_read.Text = "Upgrade FW Fail";
                     }
                     else
                     {
-                        //UIResponse.Text = "Update Firmware Success!";
                         info_read.Text = "Upgrade FW Success!";
                     }
-                    /* Disconnect bluetooth connection */
-                    //myConnection.thisDevice.Dispose();
-                    //myConnection.thisSocket.OutputStream.WriteByte(187);
-                    //myConnection.thisSocket.OutputStream.Close();
-                    //myConnection.thisSocket.Close();
-                    //myConnection = new BluetoothConnection();
-                    //_bluetoothSocket = null;
-                    //connected.Text = "Disconnected!";
-                    /* Enable connect button again */
-                    //buttonConnect.Enabled = true;
-                    /* Update UIResponse */
-                    //UIResponse.Text = "[UI]:Disconnected event!";
+                    upgrade_btn.IsVisible = true;
                 }
                 catch { }
             });
